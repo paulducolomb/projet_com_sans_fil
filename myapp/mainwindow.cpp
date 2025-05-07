@@ -90,6 +90,7 @@ void MainWindow::on_Select_carte_clicked()
     // Lecture de la valeur dans le bloc 14
     if (Mf_Classic_Read_Value(&MonLecteur, TRUE, 14, &value14, AuthKeyA, 3) == MI_OK) {
         qDebug() << "Valeur bloc 14 :" << (int)value14;
+        //ui->nb_unite->setText(QString::number((int)value14));
     } else {
         qDebug() << "Erreur lecture bloc 14";
     }
@@ -160,7 +161,7 @@ void MainWindow::on_Payer_clicked()
                 qDebug() << "Décrémentation réussie (bloc 14 -> tampon bloc 13)";
 
                 // Restaurer valeur dans bloc 14 depuis bloc 13 avec clé B
-                if (Mf_Classic_Restore_Value(&MonLecteur, TRUE, 14, 13, AuthKeyB, 3) == MI_OK) {
+                if (Mf_Classic_Restore_Value(&MonLecteur, TRUE, 13, 14, AuthKeyA, 3) == MI_OK) {
                     qDebug() << "Restauration réussie dans le bloc 14";
 
                     // Relire la valeur mise à jour
@@ -188,27 +189,26 @@ void MainWindow::on_Payer_clicked()
 
 void MainWindow::on_Charger_clicked()
 {
-    uint32_t nb_u = 0;
     uint32_t nb_u_add = ui->nb_unite_spin_inc->value();
     qDebug() << "Nombre de crédit à ajouter :" << nb_u_add;
 
-    // Lire la valeur actuelle (bloc 14) avec clé A
-    if (Mf_Classic_Read_Value(&MonLecteur, TRUE, 14, &nb_u, AuthKeyA, 3) == MI_OK) {
-        qDebug() << "Valeur d'unité sur la carte :" << nb_u;
+    uint32_t old_value = 0;
+    if (Mf_Classic_Read_Value(&MonLecteur, TRUE, 14, &old_value, AuthKeyA, 3) == MI_OK) {
+        qDebug() << "Valeur d'unité sur la carte :" << old_value;
 
-        // Incrémenter bloc 14, stocker résultat dans bloc 13 avec clé B
-        if (Mf_Classic_Increment_Value(&MonLecteur, TRUE, 14, nb_u_add, 13, AuthKeyB, 3) == MI_OK) {
+        // Incrémenter -> stocker dans le bloc tampon
+        if (Mf_Classic_Increment_Value(&MonLecteur, TRUE, 14, nb_u_add, 13, AuthKeyA, 3) == MI_OK) {
             qDebug() << "Incrémentation réussie (bloc 14 -> tampon bloc 13)";
 
-            // Restaurer valeur dans bloc 14 depuis bloc 13 avec clé B
-            if (Mf_Classic_Restore_Value(&MonLecteur, TRUE, 14, 13, AuthKeyB, 3) == MI_OK) {
+            // Restaurer tampon vers bloc 14
+            if (Mf_Classic_Restore_Value(&MonLecteur, TRUE, 13, 14, AuthKeyA, 3) == MI_OK) {
                 qDebug() << "Restauration réussie dans le bloc 14";
 
-                // Relire la valeur mise à jour
-                uint32_t new_nb = 0;
-                if (Mf_Classic_Read_Value(&MonLecteur, TRUE, 14, &new_nb, AuthKeyA, 3) == MI_OK) {
-                    ui->nb_unite->setText(QString::number(new_nb));
-                    qDebug() << "Nouvelle valeur dans le bloc 14 :" << new_nb;
+                // Lire nouvelle valeur
+                uint32_t new_value = 0;
+                if (Mf_Classic_Read_Value(&MonLecteur, TRUE, 14, &new_value, AuthKeyA, 3) == MI_OK) {
+                    qDebug() << "Nouvelle valeur dans le bloc 14 :" << new_value;
+                    ui->nb_unite->setText(QString::number(new_value));
                 } else {
                     qDebug() << "Erreur de lecture après restauration.";
                 }
@@ -221,8 +221,10 @@ void MainWindow::on_Charger_clicked()
     } else {
         qDebug() << "Échec de lecture du bloc 14.";
     }
-  on_Select_carte_clicked();
+
+    on_Select_carte_clicked();  // Rafraîchit l'affichage
 }
+
 
 
 

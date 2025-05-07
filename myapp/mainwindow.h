@@ -25,6 +25,7 @@ private slots:
     void on_Disconnect_clicked();
     void on_Charger_clicked();
     void on_Select_carte_clicked();
+    //void init_bloc_valeur(int value);
 
 
 private:
