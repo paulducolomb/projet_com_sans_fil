@@ -51,7 +51,7 @@ public:
     QGroupBox *groupBox_4;
     QTextEdit *Saisie_Affichage;
     QTextEdit *Affichage;
-    QLabel *image;
+    QLabel *image_mathilde;
     QLabel *image_marine;
     QMenuBar *menubar;
     QStatusBar *statusbar;
@@ -133,14 +133,14 @@ public:
         Affichage = new QTextEdit(centralwidget);
         Affichage->setObjectName(QString::fromUtf8("Affichage"));
         Affichage->setGeometry(QRect(30, 480, 201, 31));
-        image = new QLabel(centralwidget);
-        image->setObjectName(QString::fromUtf8("image"));
-        image->setGeometry(QRect(30, 210, 121, 121));
-        image->setPixmap(QPixmap(QString::fromUtf8(":/t\303\251l\303\251chargement.png")));
-        image->setScaledContents(true);
+        image_mathilde = new QLabel(centralwidget);
+        image_mathilde->setObjectName(QString::fromUtf8("image_mathilde"));
+        image_mathilde->setGeometry(QRect(90, 210, 121, 121));
+        image_mathilde->setPixmap(QPixmap(QString::fromUtf8(":/t\303\251l\303\251chargement.png")));
+        image_mathilde->setScaledContents(true);
         image_marine = new QLabel(centralwidget);
         image_marine->setObjectName(QString::fromUtf8("image_marine"));
-        image_marine->setGeometry(QRect(160, 210, 121, 121));
+        image_marine->setGeometry(QRect(90, 210, 121, 121));
         image_marine->setPixmap(QPixmap(QString::fromUtf8(":/Downloads/marine.png")));
         image_marine->setScaledContents(true);
         MainWindow->setCentralWidget(centralwidget);
@@ -153,7 +153,7 @@ public:
         Select_carte->raise();
         groupBox_4->raise();
         Affichage->raise();
-        image->raise();
+        image_mathilde->raise();
         image_marine->raise();
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -189,7 +189,7 @@ public:
         Disconnect->setText(QCoreApplication::translate("MainWindow", "Disconnect", nullptr));
         Select_carte->setText(QCoreApplication::translate("MainWindow", "S\303\251lectionner la carte ", nullptr));
         groupBox_4->setTitle(QCoreApplication::translate("MainWindow", "Debug", nullptr));
-        image->setText(QString());
+        image_mathilde->setText(QString());
         image_marine->setText(QString());
     } // retranslateUi
 

@@ -25,10 +25,15 @@ private slots:
     void on_Disconnect_clicked();
     void on_Charger_clicked();
     void on_Select_carte_clicked();
+    void activerLEDBuzzerRefus();
+    void activerLEDBuzzerValidation();
+
+
     //void init_bloc_valeur(int value);
 
 
 private:
     Ui::MainWindow *ui;
+
 };
 #endif // MAINWINDOW_H
