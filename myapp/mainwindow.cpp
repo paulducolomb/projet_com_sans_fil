@@ -23,20 +23,24 @@ MainWindow::~MainWindow()
 ReaderName MonLecteur;
 //petit buzzer pour valider à chaque fois
 void activerLEDBuzzerValidation() {
-    LEDBuzzer(&MonLecteur, BUZZER_ON | LED_GREEN_ON);
+    LEDBuzzer(&MonLecteur, BUZZER_ON | LED_RED_ON); //pb de couleur de led dans .h led red et green inversé mais je veux du vert
     usleep(400000);
     LEDBuzzer(&MonLecteur, 0x00);
+    ui->image_marine->setVisible(true);
+    ui->image_mathilde->setVisible(false);
 }
 
 //buzzer refus
 void activerLEDBuzzerRefus() {
-    LEDBuzzer(&MonLecteur, BUZZER_ON | LED_RED_ON);
+    LEDBuzzer(&MonLecteur, BUZZER_ON | LED_GREEN_ON);
     usleep(100000);
     LEDBuzzer(&MonLecteur, 0x00);
 
-    LEDBuzzer(&MonLecteur, BUZZER_ON | LED_RED_ON);
+    LEDBuzzer(&MonLecteur, BUZZER_ON | LED_GREEN_ON);
     usleep(100000);
     LEDBuzzer(&MonLecteur, 0x00);
+    ui->image_marine->setVisible(false);
+    ui->image_mathilde->setVisible(true);
 }
 
 
@@ -156,6 +160,10 @@ void MainWindow::on_Maj_clicked()
 
     // Écriture dans le bloc 10 (Nom)
     Mf_Classic_Write_Block(&MonLecteur, TRUE, 10, dataNom, AuthKeyB, 2);
+
+
+    ui->Saisie_Affichage->setPlainText("Identité mise à jour");
+    activerLEDBuzzerValidation();
 }
 
 
@@ -189,7 +197,7 @@ void MainWindow::on_Payer_clicked()
             if (Mf_Classic_Decrement_Value(&MonLecteur, TRUE, 14, nb_u_dec, 13, AuthKeyA, 3) == MI_OK) {
                 qDebug() << "Décrémentation réussie (bloc 14 -> tampon bloc 13)";
 
-                // Restaurer valeur dans bloc 14 depuis bloc 13 avec clé B
+                // Restaurer valeur dans bloc 14 depuis bloc 13 avec clé A
                 if (Mf_Classic_Restore_Value(&MonLecteur, TRUE, 13, 14, AuthKeyA, 3) == MI_OK) {
                     qDebug() << "Restauration réussie dans le bloc 14";
 
@@ -198,6 +206,8 @@ void MainWindow::on_Payer_clicked()
                     if (Mf_Classic_Read_Value(&MonLecteur, TRUE, 14, &new_nb, AuthKeyA, 3) == MI_OK) {
                         ui->nb_unite->setText(QString::number(new_nb));
                         activerLEDBuzzerValidation();
+                        QString message = QString("Paiement effectué avec succès de %1 unités, Il vous reste %2 unités ! ").arg(nb_u_dec).arg(new_nb);
+                        ui->Saisie_Affichage->setPlainText(message);
 
                         qDebug() << "Nouvelle valeur dans le bloc 14 :" << new_nb;
                     } else {
@@ -255,6 +265,8 @@ void MainWindow::on_Charger_clicked()
                     qDebug() << "Nouvelle valeur dans le bloc 14 :" << new_value;
                     ui->nb_unite->setText(QString::number(new_value));
                     activerLEDBuzzerValidation();
+                    QString message = QString("Chargement effectué avec succès de %1 unités. Vous avez désormais %2 unités ! ").arg(nb_u_add).arg(new_value);
+                    ui->Saisie_Affichage->setPlainText(message);
                 } else {
                     qDebug() << "Erreur de lecture après restauration.";
                     activerLEDBuzzerRefus();

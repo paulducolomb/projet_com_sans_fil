@@ -49,9 +49,10 @@ public:
     QPushButton *Disconnect;
     QPushButton *Select_carte;
     QGroupBox *groupBox_4;
-    QTextEdit *Affichage;
     QTextEdit *Saisie_Affichage;
-    QPushButton *Saisie;
+    QTextEdit *Affichage;
+    QLabel *image;
+    QLabel *image_marine;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -125,16 +126,23 @@ public:
         Select_carte->setGeometry(QRect(30, 440, 201, 29));
         groupBox_4 = new QGroupBox(centralwidget);
         groupBox_4->setObjectName(QString::fromUtf8("groupBox_4"));
-        groupBox_4->setGeometry(QRect(10, 10, 281, 231));
-        Affichage = new QTextEdit(groupBox_4);
-        Affichage->setObjectName(QString::fromUtf8("Affichage"));
-        Affichage->setGeometry(QRect(20, 50, 241, 101));
+        groupBox_4->setGeometry(QRect(20, 50, 281, 131));
         Saisie_Affichage = new QTextEdit(groupBox_4);
         Saisie_Affichage->setObjectName(QString::fromUtf8("Saisie_Affichage"));
-        Saisie_Affichage->setGeometry(QRect(20, 170, 81, 41));
-        Saisie = new QPushButton(groupBox_4);
-        Saisie->setObjectName(QString::fromUtf8("Saisie"));
-        Saisie->setGeometry(QRect(140, 170, 121, 41));
+        Saisie_Affichage->setGeometry(QRect(10, 40, 241, 71));
+        Affichage = new QTextEdit(centralwidget);
+        Affichage->setObjectName(QString::fromUtf8("Affichage"));
+        Affichage->setGeometry(QRect(30, 480, 201, 31));
+        image = new QLabel(centralwidget);
+        image->setObjectName(QString::fromUtf8("image"));
+        image->setGeometry(QRect(30, 210, 121, 121));
+        image->setPixmap(QPixmap(QString::fromUtf8(":/t\303\251l\303\251chargement.png")));
+        image->setScaledContents(true);
+        image_marine = new QLabel(centralwidget);
+        image_marine->setObjectName(QString::fromUtf8("image_marine"));
+        image_marine->setGeometry(QRect(160, 210, 121, 121));
+        image_marine->setPixmap(QPixmap(QString::fromUtf8(":/Downloads/marine.png")));
+        image_marine->setScaledContents(true);
         MainWindow->setCentralWidget(centralwidget);
         groupBox_3->raise();
         groupBox_2->raise();
@@ -144,6 +152,9 @@ public:
         Disconnect->raise();
         Select_carte->raise();
         groupBox_4->raise();
+        Affichage->raise();
+        image->raise();
+        image_marine->raise();
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
         menubar->setGeometry(QRect(0, 0, 824, 25));
@@ -178,7 +189,8 @@ public:
         Disconnect->setText(QCoreApplication::translate("MainWindow", "Disconnect", nullptr));
         Select_carte->setText(QCoreApplication::translate("MainWindow", "S\303\251lectionner la carte ", nullptr));
         groupBox_4->setTitle(QCoreApplication::translate("MainWindow", "Debug", nullptr));
-        Saisie->setText(QCoreApplication::translate("MainWindow", "Saisie", nullptr));
+        image->setText(QString());
+        image_marine->setText(QString());
     } // retranslateUi
 
 };

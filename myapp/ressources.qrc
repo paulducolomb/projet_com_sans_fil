@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>téléchargement.png</file>
+        <file>../../Downloads/marine.png</file>
+    </qresource>
+</RCC>
