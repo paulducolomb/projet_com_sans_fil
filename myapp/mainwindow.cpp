@@ -21,6 +21,25 @@ MainWindow::~MainWindow()
     delete ui;
 }
 ReaderName MonLecteur;
+//petit buzzer pour valider à chaque fois
+void activerLEDBuzzerValidation() {
+    LEDBuzzer(&MonLecteur, BUZZER_ON | LED_GREEN_ON);
+    usleep(400000);
+    LEDBuzzer(&MonLecteur, 0x00);
+}
+
+//buzzer refus
+void activerLEDBuzzerRefus() {
+    LEDBuzzer(&MonLecteur, BUZZER_ON | LED_RED_ON);
+    usleep(100000);
+    LEDBuzzer(&MonLecteur, 0x00);
+
+    LEDBuzzer(&MonLecteur, BUZZER_ON | LED_RED_ON);
+    usleep(100000);
+    LEDBuzzer(&MonLecteur, 0x00);
+}
+
+
 void MainWindow :: on_Connect_clicked()
 {
     int16_t status = MI_OK;
@@ -64,6 +83,8 @@ void MainWindow::on_Select_carte_clicked()
     if (ISO14443_3_A_PollCard(&MonLecteur, &atq, &sak, uid, &uid_len) != MI_OK)
         return;
 
+    activerLEDBuzzerValidation();
+
     // Lecture prénom (bloc 9)
     if (Mf_Classic_Read_Block(&MonLecteur, TRUE, 9, dataPrenom, AuthKeyA, 2) == MI_OK) {
         QString prenom;
@@ -85,6 +106,8 @@ void MainWindow::on_Select_carte_clicked()
         qDebug() << "Valeur bloc 13 :" << (int)value13;
     } else {
         qDebug() << "Erreur lecture bloc 13";
+        activerLEDBuzzerRefus();
+
     }
 
     // Lecture de la valeur dans le bloc 14
@@ -93,6 +116,7 @@ void MainWindow::on_Select_carte_clicked()
         //ui->nb_unite->setText(QString::number((int)value14));
     } else {
         qDebug() << "Erreur lecture bloc 14";
+        activerLEDBuzzerRefus();
     }
 
     // Comparaison et affichage
@@ -100,7 +124,9 @@ void MainWindow::on_Select_carte_clicked()
         ui->nb_unite->setText(QString::number((int)value13));
     } else {
         ui->nb_unite->setText("Incohérence");
+        activerLEDBuzzerRefus();
     }
+
 }
 
 
@@ -136,12 +162,15 @@ void MainWindow::on_Maj_clicked()
 
 void MainWindow::on_Disconnect_clicked()
 {
+    activerLEDBuzzerValidation();
     CloseCOM(&MonLecteur);
     ui->Nom->clear();
     ui->Prenom->clear();
     ui->nb_unite->clear();
     ui->nb_unite_spin_dec->clear();
     ui->nb_unite_spin_inc->clear();
+
+
 }
 
 
@@ -168,24 +197,37 @@ void MainWindow::on_Payer_clicked()
                     uint32_t new_nb = 0;
                     if (Mf_Classic_Read_Value(&MonLecteur, TRUE, 14, &new_nb, AuthKeyA, 3) == MI_OK) {
                         ui->nb_unite->setText(QString::number(new_nb));
+                        activerLEDBuzzerValidation();
+
                         qDebug() << "Nouvelle valeur dans le bloc 14 :" << new_nb;
                     } else {
                         qDebug() << "Erreur de lecture après restauration.";
+                        activerLEDBuzzerRefus();
                     }
                 } else {
                     qDebug() << "Échec de la restauration dans le bloc 14.";
+                    activerLEDBuzzerRefus();
                 }
             } else {
                 qDebug() << "Échec de la décrémentation (bloc 14).";
+                activerLEDBuzzerRefus();
             }
         } else {
-            qDebug() << "Pas assez d’unités (disponible :" << nb_u << ", demandé :" << nb_u_dec << ")";
+            QString message = QString("Pas assez d’unités (disponible : %1, demandé : %2)")
+                                  .arg(nb_u)
+                                  .arg(nb_u_dec);
+
+            ui->Saisie_Affichage->setPlainText(message);  // Affiche le message dans le champ texte
+            qDebug() << message;
+            activerLEDBuzzerRefus();
         }
     } else {
         qDebug() << "Échec de lecture du bloc 14.";
+        activerLEDBuzzerRefus();
     }
     ui->nb_unite_spin_dec->clear();
-    on_Select_carte_clicked();
+    //on_Select_carte_clicked();
+
 
 }
 
@@ -212,17 +254,23 @@ void MainWindow::on_Charger_clicked()
                 if (Mf_Classic_Read_Value(&MonLecteur, TRUE, 14, &new_value, AuthKeyA, 3) == MI_OK) {
                     qDebug() << "Nouvelle valeur dans le bloc 14 :" << new_value;
                     ui->nb_unite->setText(QString::number(new_value));
+                    activerLEDBuzzerValidation();
                 } else {
                     qDebug() << "Erreur de lecture après restauration.";
+                    activerLEDBuzzerRefus();
+
                 }
             } else {
                 qDebug() << "Échec de la restauration dans le bloc 14.";
+                activerLEDBuzzerRefus();
             }
         } else {
             qDebug() << "Échec de l’incrémentation (bloc 14).";
+            activerLEDBuzzerRefus();
         }
     } else {
         qDebug() << "Échec de lecture du bloc 14.";
+        activerLEDBuzzerRefus();
     }
 
     //on_Select_carte_clicked();
