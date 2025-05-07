@@ -51,8 +51,8 @@ public:
     QGroupBox *groupBox_4;
     QTextEdit *Saisie_Affichage;
     QTextEdit *Affichage;
-    QLabel *image_mathilde;
-    QLabel *image_marine;
+    QLabel *image_refus;
+    QLabel *image_valide;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -133,16 +133,16 @@ public:
         Affichage = new QTextEdit(centralwidget);
         Affichage->setObjectName(QString::fromUtf8("Affichage"));
         Affichage->setGeometry(QRect(30, 480, 201, 31));
-        image_mathilde = new QLabel(centralwidget);
-        image_mathilde->setObjectName(QString::fromUtf8("image_mathilde"));
-        image_mathilde->setGeometry(QRect(90, 210, 121, 121));
-        image_mathilde->setPixmap(QPixmap(QString::fromUtf8(":/t\303\251l\303\251chargement.png")));
-        image_mathilde->setScaledContents(true);
-        image_marine = new QLabel(centralwidget);
-        image_marine->setObjectName(QString::fromUtf8("image_marine"));
-        image_marine->setGeometry(QRect(90, 210, 121, 121));
-        image_marine->setPixmap(QPixmap(QString::fromUtf8(":/Downloads/marine.png")));
-        image_marine->setScaledContents(true);
+        image_refus = new QLabel(centralwidget);
+        image_refus->setObjectName(QString::fromUtf8("image_refus"));
+        image_refus->setGeometry(QRect(90, 210, 121, 121));
+        image_refus->setPixmap(QPixmap(QString::fromUtf8(":/Downloads/false.png")));
+        image_refus->setScaledContents(true);
+        image_valide = new QLabel(centralwidget);
+        image_valide->setObjectName(QString::fromUtf8("image_valide"));
+        image_valide->setGeometry(QRect(60, 210, 161, 121));
+        image_valide->setPixmap(QPixmap(QString::fromUtf8(":/Downloads/valide.png")));
+        image_valide->setScaledContents(true);
         MainWindow->setCentralWidget(centralwidget);
         groupBox_3->raise();
         groupBox_2->raise();
@@ -153,8 +153,8 @@ public:
         Select_carte->raise();
         groupBox_4->raise();
         Affichage->raise();
-        image_mathilde->raise();
-        image_marine->raise();
+        image_refus->raise();
+        image_valide->raise();
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
         menubar->setGeometry(QRect(0, 0, 824, 25));
@@ -189,8 +189,8 @@ public:
         Disconnect->setText(QCoreApplication::translate("MainWindow", "Disconnect", nullptr));
         Select_carte->setText(QCoreApplication::translate("MainWindow", "S\303\251lectionner la carte ", nullptr));
         groupBox_4->setTitle(QCoreApplication::translate("MainWindow", "Debug", nullptr));
-        image_mathilde->setText(QString());
-        image_marine->setText(QString());
+        image_refus->setText(QString());
+        image_valide->setText(QString());
     } // retranslateUi
 
 };

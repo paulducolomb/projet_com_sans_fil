@@ -14,8 +14,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->image_marine->setVisible(false);
-    ui->image_mathilde->setVisible(false);
+    ui->image_valide->setVisible(false);
+    ui->image_refus->setVisible(false);
 }
 
 MainWindow::~MainWindow()
@@ -28,8 +28,8 @@ void MainWindow::activerLEDBuzzerValidation() {
     LEDBuzzer(&MonLecteur, BUZZER_ON | LED_RED_ON); //pb de couleur de led dans .h led red et green inversé mais je veux du vert
     usleep(400000);
     LEDBuzzer(&MonLecteur, 0x00);
-    ui->image_marine->setVisible(true);
-    ui->image_mathilde->setVisible(false);
+    ui->image_valide->setVisible(true);
+    ui->image_refus->setVisible(false);
 }
 
 //buzzer refus
@@ -41,8 +41,8 @@ void MainWindow::activerLEDBuzzerRefus() {
     LEDBuzzer(&MonLecteur, BUZZER_ON | LED_GREEN_ON);
     usleep(100000);
     LEDBuzzer(&MonLecteur, 0x00);
-    ui->image_marine->setVisible(false);
-    ui->image_mathilde->setVisible(true);
+    ui->image_valide->setVisible(false);
+    ui->image_refus->setVisible(true);
 }
 
 

@@ -104,8 +104,8 @@ compiler_rcc_clean:
 	-$(DEL_FILE) release\qrc_ressources.cpp
 release/qrc_ressources.cpp: ../../ressources.qrc \
 		C:/Qt/5.15.2/mingw81_64/bin/rcc.exe \
-		../../téléchargement.png \
-		../../../../Downloads/marine.png
+		../../../../Downloads/valide.png \
+		../../../../Downloads/false.png
 	C:\Qt\5.15.2\mingw81_64\bin\rcc.exe -name ressources ..\..\ressources.qrc -o release\qrc_ressources.cpp
 
 compiler_moc_predefs_make_all: release/moc_predefs.h

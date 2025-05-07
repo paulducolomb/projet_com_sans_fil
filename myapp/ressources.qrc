@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>téléchargement.png</file>
-        <file>../../Downloads/marine.png</file>
+        <file>../../Downloads/false.png</file>
+        <file>../../Downloads/valide.png</file>
     </qresource>
 </RCC>
