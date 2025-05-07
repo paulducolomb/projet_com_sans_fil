@@ -184,6 +184,9 @@ void MainWindow::on_Payer_clicked()
     } else {
         qDebug() << "Échec de lecture du bloc 14.";
     }
+    ui->nb_unite_spin_dec->clear();
+    on_Select_carte_clicked();
+
 }
 
 
@@ -197,7 +200,7 @@ void MainWindow::on_Charger_clicked()
         qDebug() << "Valeur d'unité sur la carte :" << old_value;
 
         // Incrémenter -> stocker dans le bloc tampon
-        if (Mf_Classic_Increment_Value(&MonLecteur, TRUE, 14, nb_u_add, 13, AuthKeyA, 3) == MI_OK) {
+        if (Mf_Classic_Increment_Value(&MonLecteur, TRUE, 14, nb_u_add, 13, AuthKeyB, 3) == MI_OK) {
             qDebug() << "Incrémentation réussie (bloc 14 -> tampon bloc 13)";
 
             // Restaurer tampon vers bloc 14
@@ -222,7 +225,9 @@ void MainWindow::on_Charger_clicked()
         qDebug() << "Échec de lecture du bloc 14.";
     }
 
-    on_Select_carte_clicked();  // Rafraîchit l'affichage
+    //on_Select_carte_clicked();
+    ui->nb_unite_spin_inc->clear();
+
 }
 
 
