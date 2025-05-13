@@ -8,6 +8,8 @@
 #include "Tools.h"
 #include "TypeDefs.h"
 #include <QDebug>
+#include <QTimer>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -30,6 +32,11 @@ void MainWindow::activerLEDBuzzerValidation() {
     LEDBuzzer(&MonLecteur, 0x00);
     ui->image_valide->setVisible(true);
     ui->image_refus->setVisible(false);
+
+    QTimer::singleShot(3000, this, [this]() {
+        ui->image_valide->setVisible(false);
+
+    });
 }
 
 //buzzer refus
@@ -43,6 +50,10 @@ void MainWindow::activerLEDBuzzerRefus() {
     LEDBuzzer(&MonLecteur, 0x00);
     ui->image_valide->setVisible(false);
     ui->image_refus->setVisible(true);
+    QTimer::singleShot(3000, this, [this]() {
+        ui->image_refus->setVisible(false);
+    });
+
 }
 
 
