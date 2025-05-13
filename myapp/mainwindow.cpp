@@ -25,21 +25,21 @@ MainWindow::~MainWindow()
     delete ui;
 }
 ReaderName MonLecteur;
-//petit buzzer pour valider à chaque fois
+//fonction petit buzzer pour valider à chaque fois
 void MainWindow::activerLEDBuzzerValidation() {
     LEDBuzzer(&MonLecteur, BUZZER_ON | LED_RED_ON); //pb de couleur de led dans .h led red et green inversé mais je veux du vert
     usleep(400000);
     LEDBuzzer(&MonLecteur, 0x00);
     ui->image_valide->setVisible(true);
     ui->image_refus->setVisible(false);
-
+    //attente de 3s avant de cacher l'image
     QTimer::singleShot(3000, this, [this]() {
         ui->image_valide->setVisible(false);
 
     });
 }
 
-//buzzer refus
+//fonction de buzzer refus
 void MainWindow::activerLEDBuzzerRefus() {
     LEDBuzzer(&MonLecteur, BUZZER_ON | LED_GREEN_ON);
     usleep(100000);
@@ -50,6 +50,8 @@ void MainWindow::activerLEDBuzzerRefus() {
     LEDBuzzer(&MonLecteur, 0x00);
     ui->image_valide->setVisible(false);
     ui->image_refus->setVisible(true);
+
+    //attente de 3s avant de cacher l'image
     QTimer::singleShot(3000, this, [this]() {
         ui->image_refus->setVisible(false);
     });
